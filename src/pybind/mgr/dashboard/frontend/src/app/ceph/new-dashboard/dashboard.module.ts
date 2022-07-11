@@ -9,7 +9,6 @@ import { ChartsModule } from 'ng2-charts';
 import { SharedModule } from '~/app/shared/shared.module';
 import { CephSharedModule } from '../shared/ceph-shared.module';
 
-
 @NgModule({
   imports: [
     CephSharedModule,
@@ -23,7 +22,6 @@ import { CephSharedModule } from '../shared/ceph-shared.module';
     ReactiveFormsModule
   ],
 
-  declarations: [
-  ]
+  declarations: []
 })
 export class DashboardModule {}
