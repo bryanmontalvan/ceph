@@ -3,13 +3,57 @@
     <cd-card title="Details"
              i18n-title
              class="col-sm-3 px-3">
-             Text
+      <dl>
+        <dt>FSID</dt>
+        <dd>{{ detailsCardData.fsid }}</dd>
+        <dt>Orchestror</dt>
+        <dd>{{ detailsCardData.orchestrator }}</dd>
+        <dt>Ceph version</dt>
+        <dd>{{ detailsCardData.cephVersion }}</dd>
+      </dl>
     </cd-card>
 
-    <cd-card title="Status"
+    <cd-card *ngIf="healthData"
+            title="Status"
              i18n-title
              class="col-sm-6 px-3">
-             Text
+             <div class="d-flex">
+              <i *ngIf="healthData.health?.status != 'HEALTH_OK'"
+                  class="fa fa-exclamation-triangle text-warning"></i>
+               <i *ngIf="healthData.health?.status == 'HEALTH_OK'"
+                  class="pl-3 fa fa-check-circle text-success"></i>
+               <p class="pl-3 pr-5">Cluster</p>
+               <i class="fa fa-exclamation-triangle"></i>
+               <p>Data Health</p>
+               <p>{{  healthData.health.status }}</p>
+             </div>
+
+             <hr />
+
+             <div class="d-flex">
+               <p>Notifications</p>
+               <!-- Potentially make widget component -->
+               <button class="ml-3 btn btn-outline-danger rounded-pill">
+                <i class="fa fa-exclamation-circle"></i>
+                <a>1</a>
+               </button>
+               <span class="ml-2 btn btn-outline-warning rounded-pill">
+                <i class="fa fa-exclamation-triangle"></i>
+                <a>1</a>
+               </span>
+               <span class="ml-2 btn btn-outline-success rounded-pill">
+                <i class="fa fa-check-circle"></i>
+                <a>1</a>
+               </span>
+               <span class="ml-2 btn btn-outline-primary rounded-pill">
+                <i class="fa fa-info-circle"></i>
+                <a>1</a>
+               </span>
+               <span class="ml-2 btn btn-outline-info rounded-pill">
+                <i class="fa fa-bell"></i>
+                <a>1</a>
+               </span>
+             </div>
     </cd-card>
 
     <cd-card title="Capacity"
