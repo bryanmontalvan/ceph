@@ -7,13 +7,14 @@
 #include <iostream>
 #include <vector>
 
+#include <fmt/ranges.h>
+
 #include "debug.h"
 
 #include "common/errno.h"
 #include "messages/MOSDOp.h"
 #include "messages/MOSDRepScrub.h"
 #include "messages/MOSDRepScrubMap.h"
-#include "messages/MOSDScrub.h"
 #include "messages/MOSDScrubReserve.h"
 #include "osd/OSD.h"
 #include "osd/PG.h"
@@ -1632,7 +1633,7 @@ void PgScrubber::handle_scrub_reserve_grant(OpRequestRef op, pg_shard_t from)
   if (m_reservations.has_value()) {
     m_reservations->handle_reserve_grant(op, from);
   } else {
-    derr << __func__ << ": received unsolicited reservation grant from osd "
+    dout(20) << __func__ << ": late/unsolicited reservation grant from osd "
 	 << from << " (" << op << ")" << dendl;
   }
 }
@@ -2360,11 +2361,10 @@ ostream &operator<<(ostream &out, const PgScrubber &scrubber) {
 
 std::ostream& PgScrubber::gen_prefix(std::ostream& out) const
 {
-  const auto fsm_state = m_fsm ? m_fsm->current_states_desc() : "- :";
   if (m_pg) {
-    return m_pg->gen_prefix(out) << "scrubber " << fsm_state << ": ";
+    return m_pg->gen_prefix(out) << "scrubber<" << m_fsm_state_name << ">: ";
   } else {
-    return out << " scrubber [~] " << fsm_state << ": ";
+    return out << " scrubber [" << m_pg_id << "]: ";
   }
 }
 
